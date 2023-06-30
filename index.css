@@ -1,0 +1,34 @@
+
+.container {
+    display: flex;
+}
+
+.left {
+    flex: 1;
+}
+
+.right {
+    flex: 1;
+}
+
+#dataList {
+    height: 400px; /* Set a fixed height and add overflow-y: scroll; if you want a scrollable list */
+    overflow-y: scroll;
+}
+
+ul li:hover {
+    background-color: lightblue;
+}
+
+ul li:active {
+
+    transform: translateY(2px);
+    background-color: deepskyblue;
+
+    /* Moving button 4px to y-axis */
+}
+
+#selectedImage {
+    max-width: 100%;
+    max-height: 400px;
+}

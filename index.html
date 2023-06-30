@@ -7,17 +7,25 @@
 </head>
 <body>
 <div class="container">
-    <div class="left">
-    <input type="text" id="searchBox" placeholder="Search">
-    <ul id="dataList">
-    <!-- Populate this list dynamically with JavaScript -->
-    </ul>
+    <div class="float-child left">
+        <input type="text" id="searchBox" placeholder="Search">
+        <ul id="dataList">
+        <!-- Populate this list dynamically with JavaScript -->
+        </ul>
     </div>
-    <div class="right">
-    <img id="selectedImage" src="" alt="">
-    <button id="downloadButton">Download</button>
+    <div class="float-child right">
+        <div id="imageContainer">
+            <img id="selectedImage" src="" alt="Selected Image">
+        </div>
+        <div id="buttonContainer">
+            <button id="downloadButton">Download Image</button>
+        </div>
     </div>
-    </div>
+</div>
+
+
+
+
 
 <script src="index.js"></script>
 </body>

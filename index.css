@@ -1,19 +1,47 @@
-
 .container {
     display: flex;
 }
 
-.left {
-    flex: 1;
+#imageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-.right {
-    flex: 1;
+#buttonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#selectedImage {
+    max-width: 100%;
+    max-height: calc(100vh - 60px);
+}
+
+#downloadButton {
+    position: absolute;
+    bottom: 20px;
+}
+
+.float-child {
+  flex: 1;
+}
+
+.float-child:first-child {
+    margin-right: 20px;
 }
 
 #dataList {
-    height: 400px; /* Set a fixed height and add overflow-y: scroll; if you want a scrollable list */
+    height: 500px; /* Set a fixed height and add overflow-y: scroll; if you want a scrollable list */
     overflow-y: scroll;
+}
+
+#searchBox {
+    display: flex;
+
 }
 
 ul li:hover {
@@ -24,8 +52,6 @@ ul li:active {
 
     transform: translateY(2px);
     background-color: deepskyblue;
-
-    /* Moving button 4px to y-axis */
 }
 
 #selectedImage {

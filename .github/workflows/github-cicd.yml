@@ -2,7 +2,7 @@ name: github-cicd
 
 on:
   schedule:
-    - cron: '1-59/5 * * * *'
+    - cron: '0 12 1-31/2 * *'
 
 jobs:
   build:

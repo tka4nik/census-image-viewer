@@ -17,13 +17,15 @@
 }
 
 #selectedImage {
-    max-width: 100%;
-    max-height: calc(100vh - 60px);
+    top: 30%;
+    width:  200px;
+    height: 200px;
+    object-fit: cover;
 }
 
 #downloadButton {
     position: absolute;
-    bottom: 20px;
+    bottom: 50px;
 }
 
 .float-child {
@@ -54,7 +56,3 @@ ul li:active {
     background-color: deepskyblue;
 }
 
-#selectedImage {
-    max-width: 100%;
-    max-height: 400px;
-}

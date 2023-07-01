@@ -43,7 +43,6 @@ async function selectItem(key) {
     selectedImageElement.src = CENSUS_IMAGE_URL + key;
 }
 
-
 function filterData() {
     const searchBox = document.getElementById('searchBox');
     const searchText = searchBox.value.toLowerCase();
@@ -74,7 +73,6 @@ downloadButton.addEventListener("click", () => {
             console.log('Error downloading image: ', err);
         });
 });
-
 
 async function downloadImage(
     imageSrc,

@@ -1,13 +1,11 @@
-const API_URL =
-    "https://census.lithafalcon.cc/get/ps2/image?c:limit=100&c:join=item^on:path^to:image_path^show:name%27description^list:1&c:tree=path&c:lang=en";
+const DATA_URL =
+    "data.json";
 
-const CENSUS_IMAGE_URL = "https://census.daybreakgames.com"
+const CENSUS_IMAGE_URL = "https://census.daybreakgames.com/files/ps2/images/static/"
 
 async function fetchData() {
     try {
-        const response = await fetch(API_URL);
-        const data = await response.json();
-        return data;
+        return await fetch(DATA_URL).then(res => res.json());
     } catch (error) {
         console.error('Error fetching data:', error);
         return [];
@@ -18,51 +16,49 @@ async function displayData() {
     const dataList = document.getElementById('dataList');
     dataList.innerHTML = '';
 
-    let api_data = await fetchData();
-    api_data = api_data['image_list'];
+    let api_data = await fetchData()
+    console.log(api_data)
 
-
-    for (let [i, data] of Object.entries(api_data)) {
-        for (let [key, value] of Object.entries(data)) {
-            console.log(key, value);
-            console.log(value);
-            console.log(value['description']);
-            const listItem = document.createElement('li');
-            listItem.textContent = "Id: " + value['image_id'] + "; " + value['description'];
-            listItem.addEventListener("click", () => {
-                selectItem(key);
-            });
-            dataList.appendChild(listItem);
-        }
+    for (let data of Object.entries(api_data)) {
+        console.log(data)
+        const listItem = document.createElement('li');
+        listItem.textContent = "Id: " + data[0] + "; " + data[1]['dev_description'] + "; " + data[1]['description'];
+        listItem.addEventListener("click", () => {
+            selectItem(data[0]);
+        });
+        dataList.appendChild(listItem);
     }
 }
 
 
 async function selectItem(key) {
     const selectedImageElement = document.getElementById("selectedImage");
-    selectedImageElement.src = CENSUS_IMAGE_URL + key;
+    selectedImageElement.src = CENSUS_IMAGE_URL + key + ".png";
 }
+
+let delayTimer;
 
 function filterData() {
-    const searchBox = document.getElementById('searchBox');
-    const searchText = searchBox.value.toLowerCase();
-    const dataList = document.getElementById('dataList');
-    const listItems = dataList.getElementsByTagName('li');
+    clearTimeout(delayTimer); // Clear the previous timer
+    delayTimer = setTimeout(() => {
+        const searchText = document.getElementById('searchBox').value.toLowerCase();
+        const listItems = document.getElementById('dataList').getElementsByTagName('li');
+        for (let i = 0; i < listItems.length; i++) {
+            const listItem = listItems[i];
+            const text = listItem.textContent.toLowerCase();
 
-    for (let i = 0; i < listItems.length; i++) {
-        const listItem = listItems[i];
-        const text = listItem.textContent.toLowerCase();
-
-        if (text.includes(searchText)) {
-            listItem.style.display = '';
-        } else {
-            listItem.style.display = 'none';
+            if (text.includes(searchText)) {
+                listItem.style.display = '';
+            } else {
+                listItem.style.display = 'none';
+            }
         }
-    }
+    }, 500);
 }
-//
+
 document.getElementById('searchBox').addEventListener('input', filterData);
-//
+
+
 const downloadButton = document.getElementById("downloadButton");
 downloadButton.addEventListener("click", () => {
     const selectedImageElement = document.getElementById("selectedImage");

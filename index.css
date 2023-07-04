@@ -39,6 +39,8 @@
 #dataList {
     height: 500px; /* Set a fixed height and add overflow-y: scroll; if you want a scrollable list */
     overflow-y: scroll;
+    width: 80%;
+    overflow-x: scroll;
 }
 
 #searchBox {

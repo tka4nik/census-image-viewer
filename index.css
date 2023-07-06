@@ -53,8 +53,11 @@ ul li:hover {
 }
 
 ul li:active {
-
     transform: translateY(2px);
     background-color: deepskyblue;
+}
+
+#selectedImage {
+    background-color: gray;
 }
 

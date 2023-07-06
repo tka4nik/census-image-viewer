@@ -17,23 +17,23 @@ async function displayData() {
     dataList.innerHTML = '';
 
     let api_data = await fetchData()
-    console.log(api_data)
+    // console.log(api_data)
 
     for (let data of Object.entries(api_data)) {
-        console.log(data)
+        // console.log(data)
         const listItem = document.createElement('li');
         listItem.textContent = "Id: " + data[0] + "; " + data[1]['dev_description'] + "; " + data[1]['description'];
         listItem.addEventListener("click", () => {
-            selectItem(data[0]);
+            selectItem(data[0], data[1]['dev_description']);
         });
         dataList.appendChild(listItem);
     }
 }
 
-
-async function selectItem(key) {
+async function selectItem(key, title) {
     const selectedImageElement = document.getElementById("selectedImage");
     selectedImageElement.src = CENSUS_IMAGE_URL + key + ".png";
+    selectedImageElement.title = title;
 }
 
 let delayTimer;
@@ -47,14 +47,24 @@ function filterData() {
             const listItem = listItems[i];
             const text = listItem.textContent.toLowerCase();
 
-            if (text.includes(searchText)) {
-                listItem.style.display = '';
+            if (!text.includes(searchText)) {
+                listItem.style.height = "0px";
+                listItem.style.fontSize = "0px";
+                listItem.style.color = "white";
+                // listItem.style.display = "none";
             } else {
-                listItem.style.display = 'none';
+                listItem.style.height = "auto";
+                listItem.style.fontSize = "16px";
+                listItem.style.color = "black";
+
+                // listItem.style.display = "";
+
+
             }
         }
     }, 500);
 }
+
 
 document.getElementById('searchBox').addEventListener('input', filterData);
 

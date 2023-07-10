@@ -56,10 +56,6 @@ function filterData() {
                 listItem.style.height = "auto";
                 listItem.style.fontSize = "16px";
                 listItem.style.color = "black";
-
-                // listItem.style.display = "";
-
-
             }
         }
     }, 500);

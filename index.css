@@ -21,6 +21,7 @@
     width:  30vh;
     height: 30vh;
     object-fit: cover;
+    background-color: gray;
 }
 
 #downloadButton {
@@ -56,7 +57,5 @@ ul li:active {
     background-color: deepskyblue;
 }
 
-#selectedImage {
-    background-color: gray;
-}
+image
 

@@ -12,6 +12,8 @@ async function fetchData() {
     }
 }
 
+let selected_item;
+
 async function displayData() {
     const dataList = document.getElementById('dataList');
     dataList.innerHTML = '';
@@ -24,13 +26,20 @@ async function displayData() {
         const listItem = document.createElement('li');
         listItem.textContent = "Id: " + data[0] + "; " + data[1]['dev_description'] + "; " + data[1]['description'];
         listItem.addEventListener("click", () => {
-            selectItem(data[0], data[1]['dev_description']);
+            selectItem(listItem, data[0], data[1]['dev_description']);
         });
         dataList.appendChild(listItem);
     }
+    selected_item = dataList.firstChild;
 }
 
-async function selectItem(key, title) {
+async function selectItem(item, key, title) {
+    selected_item.style.outline = "";
+    selected_item.style.backgroundColor = ""
+    selected_item = item;
+    selected_item.style.backgroundColor = "rgba(44, 94, 219, .4)"
+    selected_item.style.outline = "solid blue 2px";
+
     const selectedImageElement = document.getElementById("selectedImage");
     selectedImageElement.src = CENSUS_IMAGE_URL + key + ".png";
     selectedImageElement.title = title;
@@ -51,7 +60,6 @@ function filterData() {
                 listItem.style.height = "0px";
                 listItem.style.fontSize = "0px";
                 listItem.style.color = "white";
-                // listItem.style.display = "none";
             } else {
                 listItem.style.height = "auto";
                 listItem.style.fontSize = "16px";

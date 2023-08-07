@@ -53,31 +53,24 @@ async function selectItem(item, key, title) {
 let delayTimer;
 
 function filterData() {
-    clearTimeout(delayTimer); // Clear the previous timer
-    delayTimer = setTimeout(() => {
-        const searchText = document.getElementById('searchBox').value.toLowerCase();
-        const listItems = document.getElementById('dataList').getElementsByTagName('li');
-        for (let i = 0; i < listItems.length; i++) {
-            const listItem = listItems[i];
-            const text = listItem.textContent.toLowerCase();
-            if (!text.includes(searchText)) {
-                if (description_flag) {
-                    if (!listItem.classList.contains("description")) {
-                        listItem.style.height = "0px";
-                        listItem.style.fontSize = "0px";
-                        listItem.style.color = "white";
-                    }
-                } else {
-                    listItem.style.height = "0px";
-                    listItem.style.fontSize = "0px";
-                    listItem.style.color = "white";
-                }
-            }
+    clearFilters();
+    const searchText = document.getElementById('searchBox').value.toLowerCase();
+    const listItems = document.getElementById('dataList').getElementsByTagName('li');
+    for (let i = 0; i < listItems.length; i++) {
+        const listItem = listItems[i];
+        const text = listItem.textContent.toLowerCase();
+        if (!text.includes(searchText)) {
+            listItem.style.height = "0px";
+            listItem.style.fontSize = "0px";
+            listItem.style.color = "white";
         }
-    }, 500);
+    }
 }
 
-document.getElementById('searchBox').addEventListener('input', filterData);
+document.getElementById('searchBox').addEventListener('input', () => {
+    clearTimeout(delayTimer);
+    delayTimer = setTimeout(filterData, 500);
+});
 
 function clearFilters() {
     const listItems = document.getElementById('dataList').getElementsByTagName('li');
@@ -88,31 +81,44 @@ function clearFilters() {
         listItem.style.color = "black";
     }
 
-    document.getElementById("searchBox").value = "";
     if (description_flag) {
         description_flag = false;
         descriptionFilter();
     }
 }
-document.getElementById('clear').addEventListener('click', clearFilters);
+document.getElementById('clear').addEventListener('click', () => {
+    clearFilters();
+    document.getElementById("searchBox").value = "";
+});
 
 
 let description_flag = false;
 function descriptionFilter() {
-    description_flag = !description_flag;
     const listItems = document.getElementById('dataList').getElementsByTagName('li');
-    for (let i = 0; i < listItems.length; i++) {
-        const listItem = listItems[i];
-        if (!listItem.classList.contains("description") && description_flag) {
-            listItem.style.height = "0px";
-            listItem.style.fontSize = "0px";
-            listItem.style.color = "white";
-        } else {
-            listItem.style.height = "auto";
-            listItem.style.fontSize = "16px";
-            listItem.style.color = "black";
+
+    if (description_flag) {
+        for (let i = 0; i < listItems.length; i++) {
+            const listItem = listItems[i];
+            if (listItem.classList.contains("description")) {
+                listItem.style.height = "auto";
+                listItem.style.fontSize = "16px";
+                listItem.style.color = "black";
+            }
         }
+        description_flag = false;
+        filterData();
+    } else {
+        for (let i = 0; i < listItems.length; i++) {
+            const listItem = listItems[i];
+            if (!listItem.classList.contains("description")) {
+                listItem.style.height = "0px";
+                listItem.style.fontSize = "0px";
+                listItem.style.color = "white";
+            }
+        }
+        description_flag = true;
     }
+
 }
 
 document.getElementById('description').addEventListener("click", descriptionFilter);

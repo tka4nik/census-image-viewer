@@ -105,6 +105,7 @@ function descriptionFilter() {
                 listItem.style.color = "black";
             }
         }
+        document.getElementById("description").style.backgroundColor = "";
         description_flag = false;
         filterData();
     } else {
@@ -116,6 +117,7 @@ function descriptionFilter() {
                 listItem.style.color = "white";
             }
         }
+        document.getElementById("description").style.backgroundColor = "rgba(40, 209, 57, 0.4)";
         description_flag = true;
     }
 

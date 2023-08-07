@@ -25,6 +25,11 @@ async function displayData() {
         // console.log(data)
         const listItem = document.createElement('li');
         listItem.textContent = "Id: " + data[0] + "; " + data[1]['dev_description'] + "; " + data[1]['description'];
+        console.log(data[1]['description']);
+        if (data[1]['description']) {
+            listItem.classList.add("description");
+            console.log("description");
+        }
         listItem.addEventListener("click", () => {
             selectItem(listItem, data[0], data[1]['dev_description']);
         });
@@ -55,22 +60,62 @@ function filterData() {
         for (let i = 0; i < listItems.length; i++) {
             const listItem = listItems[i];
             const text = listItem.textContent.toLowerCase();
-
             if (!text.includes(searchText)) {
-                listItem.style.height = "0px";
-                listItem.style.fontSize = "0px";
-                listItem.style.color = "white";
-            } else {
-                listItem.style.height = "auto";
-                listItem.style.fontSize = "16px";
-                listItem.style.color = "black";
+                if (description_flag) {
+                    if (!listItem.classList.contains("description")) {
+                        listItem.style.height = "0px";
+                        listItem.style.fontSize = "0px";
+                        listItem.style.color = "white";
+                    }
+                } else {
+                    listItem.style.height = "0px";
+                    listItem.style.fontSize = "0px";
+                    listItem.style.color = "white";
+                }
             }
         }
     }, 500);
 }
 
-
 document.getElementById('searchBox').addEventListener('input', filterData);
+
+function clearFilters() {
+    const listItems = document.getElementById('dataList').getElementsByTagName('li');
+    for (let i = 0; i < listItems.length; i++) {
+        const listItem = listItems[i];
+        listItem.style.height = "auto";
+        listItem.style.fontSize = "16px";
+        listItem.style.color = "black";
+    }
+
+    document.getElementById("searchBox").value = "";
+    if (description_flag) {
+        description_flag = false;
+        descriptionFilter();
+    }
+}
+document.getElementById('clear').addEventListener('click', clearFilters);
+
+
+let description_flag = false;
+function descriptionFilter() {
+    description_flag = !description_flag;
+    const listItems = document.getElementById('dataList').getElementsByTagName('li');
+    for (let i = 0; i < listItems.length; i++) {
+        const listItem = listItems[i];
+        if (!listItem.classList.contains("description") && description_flag) {
+            listItem.style.height = "0px";
+            listItem.style.fontSize = "0px";
+            listItem.style.color = "white";
+        } else {
+            listItem.style.height = "auto";
+            listItem.style.fontSize = "16px";
+            listItem.style.color = "black";
+        }
+    }
+}
+
+document.getElementById('description').addEventListener("click", descriptionFilter);
 
 
 const downloadButton = document.getElementById("downloadButton");

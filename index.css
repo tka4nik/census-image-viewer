@@ -2,6 +2,15 @@
     display: flex;
 }
 
+body {
+    max-width:90vw;
+    margin:auto;
+    background-color:#EEE;
+    border:1px solid #EEE;
+    border-radius:1em;
+    font-family: Sans-Serif, serif;
+}
+
 #imageContainer {
     display: flex;
     justify-content: center;

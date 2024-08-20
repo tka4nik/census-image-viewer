@@ -1,33 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Static Website</title>
-    <link rel="stylesheet" type="text/css" href="index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Browser</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-<div class="container">
-    <div class="float-child left">
-        <input type="text" id="searchBox" placeholder="Search">
-        <input type="button" id="clear" value="Clear">
-        <input type="button" id="description" value="Description">
-        <ul id="dataList">
-        <!-- Populate this list dynamically with JavaScript -->
-        </ul>
-    </div>
-    <div class="float-child right">
-        <div id="imageContainer">
-            <img id="selectedImage" src="" alt="Selected Image" onerror="this.src='none.jpg'">
+    <div class="container">
+
+        <div class="sidebar">
+            <div class="search-container">
+                <button id="searchBtn">Search</button>
+                <input type="text" id="searchInput" placeholder="Search images by title...">
+                <div class="filters">
+                        <span class="filter-item" data-filter="filter1">Filter 1</span>
+                        <span class="filter-item" data-filter="filter2">Filter 2</span>
+                        <span class="filter-item" data-filter="filter3">Filter 3</span>
+                        <button class="reset-btn">Reset</button>
+                </div>
+            </div>
+
+            <div class="image-list" id="imageList">
+                <!--(Dynamic list from JSON)) -->
+            </div>
         </div>
-        <div id="buttonContainer">
-            <button id="downloadButton">Download Image</button>
-        </div>
+
+       <div class="main-content">
+            <div class="image-title">
+                    <h2 id="imageTitle">Select an image</h2>
+            </div>
+            <div class="image-container">
+                    <img id="selectedImage" src="" alt="Selected Image" onerror="this.src='./none.png'" />
+            </div>
+            <div class="download-section">
+                    <a id="downloadBtn" class="download-btn" href="#" download>Download Image</a>
+            </div>
+            <p id="imageDescription"></p>
+       </div>
+
     </div>
-</div>
 
-
-
-
-
-<script src="index.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>

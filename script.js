@@ -33,10 +33,12 @@ function script() {
     });
 
     // Search function
+    // TODO: В иделе переделать как будто бы под добавление класса (или атрибута), чтобы проще с фильтрами работать
+    // Или под лист переделать, и использовать библиотеку https://listjs.com/
     searchBtn.addEventListener("click", function() {
         const searchTerm = searchInput.value.toLowerCase();
         imageItems.forEach(item => {
-            if (item.textContent.toLowerCase().includes(searchTerm)) {
+            if (item.style.display === "" && item.textContent.toLowerCase().includes(searchTerm)) {
                 item.style.display = "";
             } else {
                 item.style.display = "none";
@@ -44,9 +46,18 @@ function script() {
         });
     });
 
+    document.querySelector(".attached").addEventListener("click", function() {
+        imageItems.forEach(item => {
+            if (item.style.display === "" && item.getAttribute("desc") == "") {
+                    item.style.display = "none";
+                }
+        })
+    });
+
     // Filter selection
     filterItems.forEach(filter => {
         filter.addEventListener("click", function() {
+            filterItems.forEach(filter => filter.classList.remove("selected"));
             filter.classList.toggle("selected");
         });
     });
@@ -58,21 +69,7 @@ function script() {
         filterItems.forEach(filter => filter.classList.remove("selected"));
     });
 
-    document.querySelector(".download-btn").addEventListener("click", function() {
-        let selected_image = document.querySelector(".selected");
-        console.log(selected_image);
-        if (selected_image) {
-            const imageUrl = `${CENSUS_IMAGE_URL}${selected_image.getAttribute("data-url")}.png`;
-
-            const anchorElement = document.createElement('a');
-            anchorElement.href = imageUrl;
-            anchorElement.download = selected_image.getAttribute("data-url") + ".png";
-            anchorElement.target = "_blank";
-            document.body.appendChild(anchorElement);
-            anchorElement.click();
-            document.body.removeChild(anchorElement);
-        }
-    });
+    document.querySelector(".download-btn").addEventListener("click", image => downloadSelectedImage(image));
 
     // Press Enter to trigger search
     searchInput.addEventListener("keypress", function(event) {
@@ -94,15 +91,44 @@ async function fetchData() {
 async function populateImageList() {
         let  images = await fetchData();
         imageList.innerHTML = '';
+        items_size_list = [];
         Object.entries(images).forEach(([id, data]) => {
             const item = document.createElement('div');
             item.innerText = id + ": " + data.dev_description + "; " + data.description;
             item.classList.add("image-item");
             item.setAttribute("data-url", id);
+            item.setAttribute("dev-desc", data.dev_description);
+            item.setAttribute("desc", "");
+            if (data.description !== "") {
+                console.log(data.description);
+                item.setAttribute("desc", data.description);
+            }
+
+            /* Logic for max_res attribute goes here */
+
             imageList.appendChild(item);
         });
         script();
     }
+
+//TODO: Мб переделать еще отображение item'а - отдельно id и описания (как раз под передлку под лист для библиотеки возможно)
+async function downloadSelectedImage(image) {
+    imageSrc = `${CENSUS_IMAGE_URL}${image.getAttribute("data-url")}.png`;
+
+    const response = await fetch(imageSrc);
+    const blobImage = await response.blob();
+
+    const href = URL.createObjectURL(blobImage);
+
+    const anchorElement = document.createElement('a');
+    anchorElement.href = href;
+    anchorElement.download = image.getAttribute("dev-desc")+".png";
+    anchorElement.target = "_blank";
+    document.body.appendChild(anchorElement);
+    anchorElement.click();
+    document.body.removeChild(anchorElement);
+    window.URL.revokeObjectURL(href);
+}
 
 populateImageList();
 

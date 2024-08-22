@@ -2,12 +2,13 @@ const CENSUS_IMAGE_URL = "https://census.daybreakgames.com/files/ps2/images/stat
 const DATA_URL = "data.json"
 
 const  imageList = document.getElementById("imageList");
+const downloadBtn = document.getElementById("downloadBtn");
+
 
 function script() {
     const imageItems = document.querySelectorAll(".image-item");
     const selectedImage = document.getElementById("selectedImage");
     const imageTitle = document.getElementById("imageTitle");
-    const downloadBtn = document.getElementById("downloadBtn");
     const searchBtn = document.getElementById("searchBtn");
     const searchInput = document.getElementById("searchInput");
     const filterItems = document.querySelectorAll(".filter-item");
@@ -15,8 +16,8 @@ function script() {
     imageItems.forEach(item => {
         // console.log(item);
         item.addEventListener("click", function() {
-            const imageUrl = CENSUS_IMAGE_URL + item.getAttribute("data-url");
-            console.log(imageUrl);
+            const imageUrl = `${CENSUS_IMAGE_URL}${item.getAttribute("data-url")}`;
+            // console.log(imageUrl);
 
             // Highlight selected item
             imageItems.forEach(img => img.classList.remove("selected"));
@@ -27,8 +28,9 @@ function script() {
 
             // Load the image on the right side
             selectedImage.src = imageUrl;
-            downloadBtn.href = imageUrl;
-            downloadBtn.download = imageUrl.split('/').pop();
+            selectedImage.alt = item.getAttribute("dev-desc");
+            // downloadBtn.href = imageUrl;
+            // downloadBtn.download = imageUrl.split('/').pop();
         });
     });
 
@@ -69,7 +71,10 @@ function script() {
         filterItems.forEach(filter => filter.classList.remove("selected"));
     });
 
-    document.querySelector(".download-btn").addEventListener("click", image => downloadSelectedImage(image));
+    document.querySelector(".download-btn").addEventListener("click", async () => {
+        selected_image = document.getElementById("selectedImage");
+        await downloadSelectedImage(selected_image.src, selected_image.alt);
+    });
 
     // Press Enter to trigger search
     searchInput.addEventListener("keypress", function(event) {
@@ -88,6 +93,7 @@ async function fetchData() {
     }
 }
 
+//TODO: Мб переделать еще отображение item'а - отдельно id и описания (как раз под передлку под лист для библиотеки возможно)
 async function populateImageList() {
         let  images = await fetchData();
         imageList.innerHTML = '';
@@ -100,7 +106,6 @@ async function populateImageList() {
             item.setAttribute("dev-desc", data.dev_description);
             item.setAttribute("desc", "");
             if (data.description !== "") {
-                console.log(data.description);
                 item.setAttribute("desc", data.description);
             }
 
@@ -111,18 +116,16 @@ async function populateImageList() {
         script();
     }
 
-//TODO: Мб переделать еще отображение item'а - отдельно id и описания (как раз под передлку под лист для библиотеки возможно)
-async function downloadSelectedImage(image) {
-    imageSrc = `${CENSUS_IMAGE_URL}${image.getAttribute("data-url")}.png`;
-
-    const response = await fetch(imageSrc);
+async function downloadSelectedImage(image, description) {
+    console.log(image);
+    const response = await fetch(image);
     const blobImage = await response.blob();
 
     const href = URL.createObjectURL(blobImage);
 
     const anchorElement = document.createElement('a');
     anchorElement.href = href;
-    anchorElement.download = image.getAttribute("dev-desc")+".png";
+    anchorElement.download = description + ".png";
     anchorElement.target = "_blank";
     document.body.appendChild(anchorElement);
     anchorElement.click();
